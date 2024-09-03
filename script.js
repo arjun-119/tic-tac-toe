@@ -9,7 +9,20 @@ function Gameboard(){
             board[i].push(Cell());
         }
     }
-    
+
+}
+
+function Cell(){
+    let value = 1;
+
+    const getValue = ()=> value;
+
+    const markValue = (player) => value = player;
+
+    return{
+        getValue,
+        markValue
+    };
 }
 
 function GameController(){

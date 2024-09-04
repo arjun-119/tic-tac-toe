@@ -20,7 +20,7 @@ function Gameboard() {
   };
 
   const printBoard = () => {
-    boardValues = board.map((row) => row.map((cell) => cell.getValue()));
+    const boardValues = board.map((row) => row.map((cell) => cell.getValue()));
     console.log(boardValues);
   };
 
@@ -60,7 +60,7 @@ function GameController() {
   let activePlayer = Players[0];
 
   const switchPlayerTurn = () => {
-    activePlayer === Players[0] ? Players[1] : Players[0];
+    activePlayer = activePlayer === Players[0] ? Players[1] : Players[0];
   };
 
   const getActivePlayer = () => activePlayer;
@@ -70,16 +70,19 @@ function GameController() {
   const PlayRound = (row, column) => {
     console.log(
       `${getActivePlayer().name} marks ${
-        getActivePlayer().token
+        getActivePlayer().marker
       } at Row ${row} and Column ${column}`
     );
-    board.addMarker(row, column, getActivePlayer().token);
 
+    board.addMarker(row, column, getActivePlayer().marker);
+    board.printBoard();
     switchPlayerTurn();
   };
-  
+
   return {
     NewRound,
     PlayRound
   };
 }
+
+const game = GameController();

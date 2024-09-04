@@ -10,11 +10,24 @@ function Gameboard() {
     }
   }
 
+  const getBoard = () => board;
+
   const addMarker = (row, column, player) => {
     const availableCells = board[row].filter((item) => item.getValue() === 1);
 
     if (!availableCells.length) return;
     board[row][column].markValue(player);
+  };
+
+  const printBoard = () => {
+    boardValues = board.map((row) => row.map((cell) => cell.getValue()));
+    console.log(boardValues);
+  };
+
+  return {
+    addMarker,
+    getBoard,
+    printBoard,
   };
 }
 
@@ -32,6 +45,7 @@ function Cell() {
 }
 
 function GameController() {
+  const board = Gameboard();
   const Players = [
     {
       name: "Player 1",
@@ -42,4 +56,30 @@ function GameController() {
       marker: "O",
     },
   ];
+
+  let activePlayer = Players[0];
+
+  const switchPlayerTurn = () => {
+    activePlayer === Players[0] ? Players[1] : Players[0];
+  };
+
+  const getActivePlayer = () => activePlayer;
+
+  const NewRound = () => board.getBoard();
+
+  const PlayRound = (row, column) => {
+    console.log(
+      `${getActivePlayer().name} marks ${
+        getActivePlayer().token
+      } at Row ${row} and Column ${column}`
+    );
+    board.addMarker(row, column, getActivePlayer().token);
+
+    switchPlayerTurn();
+  };
+  
+  return {
+    NewRound,
+    PlayRound
+  };
 }

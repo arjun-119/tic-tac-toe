@@ -1,7 +1,7 @@
 function Gameboard() {
   const rows = 3;
   const columns = 3;
-  board = [];
+  let board = [];
 
   for (let i = 0; i < rows; i++) {
     board[i] = [];
@@ -12,11 +12,14 @@ function Gameboard() {
 
   const getBoard = () => board;
 
-  const addMarker = (row, column, player) => {
-    const availableCells = board[row].filter((item) => item.getValue() === 1);
+  const checkMarkValidity = (row, column, player) =>{
+    const cell = board[row][column];
+    const available = cell.getValue() === 1 ? true : false ;
+    return available;
+  }
 
-    if (!availableCells.length) return;
-    board[row][column].markValue(player);
+  const addMarker = (row, column, player) => {
+      board[row][column].markValue(player);
   };
 
   const printBoard = () => {
@@ -28,6 +31,7 @@ function Gameboard() {
     addMarker,
     getBoard,
     printBoard,
+    checkMarkValidity
   };
 }
 
@@ -36,7 +40,7 @@ function Cell() {
 
   const getValue = () => value;
 
-  const markValue = (player) => (value = player);
+  const markValue = (player) => value = player;
 
   return {
     getValue,
@@ -65,23 +69,28 @@ function GameController() {
 
   const getActivePlayer = () => activePlayer;
 
-  const NewRound = () => board.getBoard();
-
   const PlayRound = (row, column) => {
     console.log(
-      `${getActivePlayer().name} marks ${
+      `${getActivePlayer().name} wants to mark ${
         getActivePlayer().marker
       } at Row ${row} and Column ${column}`
     );
 
+    if(board.checkMarkValidity(row, column, getActivePlayer().marker)){
+    console.log("Valid move!");    
     board.addMarker(row, column, getActivePlayer().marker);
-    board.printBoard();
     switchPlayerTurn();
+    board.printBoard();
+  }
+    else{
+      console.log("Invalid mark, Please try again!");
+      board.printBoard();
+    }
   };
 
   return {
-    NewRound,
-    PlayRound
+    PlayRound,
+    getActivePlayer
   };
 }
 

@@ -90,6 +90,7 @@ function GameController() {
         b[0][2].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[2][0].getValue())
     ) {
+      board.printBoard();
       console.log(`${getActivePlayer().name} WINS!!!`);
       gameOver = true;
       return;
@@ -119,7 +120,7 @@ function GameController() {
       checkWin();
 
       if (!gameOver) switchPlayerTurn();
-      board.printBoard();
+
     } else {
       console.log("Invalid mark, please try again!");
       board.printBoard();

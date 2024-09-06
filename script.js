@@ -62,7 +62,16 @@ function GameController() {
   ];
 
   let activePlayer = Players[0];
+  let gameOver = false;
 
+  const checkWin =  ()=>{
+    if(board.getBoard()[0][0].getValue() === board.getBoard()[0][1].getValue() === board.getBoard()[0][2].getValue() || board.getBoard()[0][0].getValue() === board.getBoard()[1][0].getValue() === board.getBoard()[2][0].getValue() || board.getBoard()[0][0].getValue() === board.getBoard()[1][1].getValue() === board.getBoard()[2][2].getValue() || board.getBoard()[0][1].getValue() === board.getBoard()[1][1].getValue() === board.getBoard()[2][1].getValue() || board.getBoard()[0][2].getValue() === board.getBoard()[1][2].getValue() === board.getBoard()[2][2].getValue() || board.getBoard()[0][2].getValue() === board.getBoard()[1][1].getValue() === board.getBoard()[2][0].getValue() || board.getBoard()[1][0].getValue() === board.getBoard()[1][1].getValue() === board.getBoard()[1][2].getValue() || board.getBoard()[2][0].getValue() === board.getBoard()[2][1].getValue() === board.getBoard()[2][2].getValue())
+      {
+        console.log(`${getActivePlayer().name} WINS!!!`);
+        gameOver = true;
+        return ;
+    }
+  }
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === Players[0] ? Players[1] : Players[0];
   };
@@ -70,6 +79,12 @@ function GameController() {
   const getActivePlayer = () => activePlayer;
 
   const PlayRound = (row, column) => {
+
+    if (gameOver){
+      console.log("Game Over");
+      return;
+    }
+
     console.log(
       `${getActivePlayer().name} wants to mark ${
         getActivePlayer().marker
@@ -79,7 +94,10 @@ function GameController() {
     if(board.checkMarkValidity(row, column, getActivePlayer().marker)){
     console.log("Valid move!");    
     board.addMarker(row, column, getActivePlayer().marker);
-    switchPlayerTurn();
+    checkWin();
+
+    if(!gameOver)
+      switchPlayerTurn();
     board.printBoard();
   }
     else{
@@ -90,7 +108,8 @@ function GameController() {
 
   return {
     PlayRound,
-    getActivePlayer
+    getActivePlayer,
+    checkWin
   };
 }
 

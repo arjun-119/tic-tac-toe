@@ -134,4 +134,6 @@ function GameController() {
   };
 }
 
-const game = GameController();
+function ScreenController(){}
+
+function clickHandler(e){}

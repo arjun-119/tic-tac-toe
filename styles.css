@@ -12,3 +12,15 @@ html{
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
+
+.cell{
+    cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border: 1px solid grey;
+        background: lightyellow;
+        cursor: pointer;
+      }
+}

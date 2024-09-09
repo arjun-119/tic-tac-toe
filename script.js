@@ -131,9 +131,38 @@ function GameController() {
     PlayRound,
     getActivePlayer,
     checkWin,
+    getBoard: board.getBoard
   };
 }
 
-function ScreenController(){}
+function ScreenController(){
+  const game = GameController();
+  const playerTurn = document.querySelector(".turn");
+  const boardDiv = document.querySelector(".board");
+
+  const updateScreen = ()=>{
+
+    boardDiv.textContent = '';
+
+    const board = game.getBoard();
+    const activePlayer = game.getActivePlayer();
+
+    playerTurn.textContent = `${activePlayer.name}'s turn!`;
+
+    board.forEach(row=>{
+      row.forEach((cell, index)=>{
+
+        const cellButton = document.createElement("button");
+        cellButton.classList.add("cell");
+
+        cellButton.dataset.column = index
+        cellButton.textContent = cell.getValue();
+        boardDiv.appendChild(cellButton);
+
+      })
+    })
+
+  }
+}
 
 function clickHandler(e){}

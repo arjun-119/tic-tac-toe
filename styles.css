@@ -13,8 +13,8 @@ html{
     grid-template-rows: repeat(3, 1fr);
 }
 
-.cell{
-    cell {
+.cell
+     {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -23,4 +23,3 @@ html{
         background: lightyellow;
         cursor: pointer;
       }
-}

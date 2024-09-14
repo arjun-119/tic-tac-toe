@@ -175,3 +175,4 @@ function ScreenController() {
 }
 
 ScreenController();
+// Restart debugging the entire code through from the start and fogure out a place to add and display the required content.

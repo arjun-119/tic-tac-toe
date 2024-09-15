@@ -3,29 +3,39 @@ function Gameboard() {
   const columns = 3;
   let board = [];
 
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < columns; j++) {
-      board[i].push(Cell());
+  const initializeBoard = () => {
+    board = [];
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j < columns; j++) {
+        board[i].push(Cell());
+      }
     }
-  }
+  };
+
+  // Initialize the board at the start
+  initializeBoard();
 
   const getBoard = () => board;
 
   const checkMarkValidity = (row, column, player) => {
     const cell = board[row][column];
-    const available = cell.getValue() === ""; // '' indicates an available cell
-    return available;
+    return cell.getValue() === ""; // '' indicates an available cell
   };
 
   const addMarker = (row, column, player) => {
     board[row][column].markValue(player);
   };
 
+  const resetBoard = () => {
+    initializeBoard();
+  };
+
   return {
     addMarker,
     getBoard,
     checkMarkValidity,
+    resetBoard,
   };
 }
 
@@ -43,7 +53,7 @@ function Cell() {
 }
 
 function GameController() {
-  const board = Gameboard();
+  let board = Gameboard();
   const Players = [
     { name: "Player 1", marker: "X" },
     { name: "Player 2", marker: "O" },
@@ -85,10 +95,8 @@ function GameController() {
         b[0][2].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[2][0].getValue())
     ) {
-      console.log(`${getActivePlayer().name} WINS!!!`);
       gameOver = true;
       headerContent.textContent = `${getActivePlayer().name} WINS!!!`;
-      return;
     }
   };
 
@@ -101,41 +109,38 @@ function GameController() {
   const isGameOver = () => gameOver;
 
   const PlayRound = (row, column) => {
-    if (gameOver) {
-      console.log("Game Over");
-      return;
-    }
+    if (gameOver) return;
 
     const activePlayer = getActivePlayer();
-    console.log(
-      `${activePlayer.name} wants to mark ${activePlayer.marker} at Row ${row} and Column ${column}`
-    );
 
     if (board.checkMarkValidity(row, column, activePlayer.marker)) {
-      console.log("Valid move!");
       board.addMarker(row, column, activePlayer.marker);
       checkWin();
-
       if (!gameOver) switchPlayerTurn();
-    } else {
-      console.log("Invalid mark, please try again!");
     }
+  };
+
+  const resetGame = () => {
+    activePlayer = Players[0];
+    gameOver = false;
+    headerContent.textContent = `${activePlayer.name}'s turn!`;
+    board.resetBoard();
   };
 
   return {
     PlayRound,
     getActivePlayer,
-    checkWin,
     getBoard: board.getBoard,
-    isGameOver
+    isGameOver,
+    resetGame,
   };
 }
 
 function ScreenController() {
-
   const game = GameController();
   const playerTurn = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
+  const resetButton = document.querySelector(".resetButton");
 
   const updateScreen = () => {
     boardDiv.textContent = "";
@@ -143,9 +148,9 @@ function ScreenController() {
     const board = game.getBoard();
     let activePlayer = game.getActivePlayer();
 
-    if(!game.isGameOver())
-     playerTurn.textContent = `${activePlayer.name}'s turn!`;
-  
+    if (!game.isGameOver())
+      playerTurn.textContent = `${activePlayer.name}'s turn!`;
+
     board.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
         const cellButton = document.createElement("button");
@@ -159,16 +164,22 @@ function ScreenController() {
     });
   };
 
-  function clickHandler(e) {
+  const clickHandler = (e) => {
     const selectedColumn = e.target.dataset.column;
     const selectedRow = e.target.dataset.row;
 
     if (!selectedColumn || !selectedRow) return;
-    
+
     game.PlayRound(selectedRow, selectedColumn);
     updateScreen();
-  }
+  };
+
   boardDiv.addEventListener("click", clickHandler);
+
+  resetButton.addEventListener("click", () => {
+    game.resetGame();
+    updateScreen();
+  });
 
   updateScreen();
 }

@@ -98,8 +98,9 @@ function GameController() {
 
   const getActivePlayer = () => activePlayer;
 
+  const isGameOver = () => gameOver;
+
   const PlayRound = (row, column) => {
-    // headerContent.textContent = `${activePlayer.name}'s turn`;
     if (gameOver) {
       console.log("Game Over");
       return;
@@ -126,26 +127,25 @@ function GameController() {
     getActivePlayer,
     checkWin,
     getBoard: board.getBoard,
+    isGameOver
   };
 }
 
 function ScreenController() {
+
   const game = GameController();
   const playerTurn = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
-  const activePlayer = game.getActivePlayer();
-
-  
-  playerTurn.textContent = `${activePlayer.name}'s turn!`;
 
   const updateScreen = () => {
     boardDiv.textContent = "";
 
     const board = game.getBoard();
-    // const activePlayer = game.getActivePlayer();
+    let activePlayer = game.getActivePlayer();
 
-    // playerTurn.textContent = `${activePlayer.name}'s turn!`;
-
+    if(!game.isGameOver())
+     playerTurn.textContent = `${activePlayer.name}'s turn!`;
+  
     board.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
         const cellButton = document.createElement("button");
@@ -164,7 +164,7 @@ function ScreenController() {
     const selectedRow = e.target.dataset.row;
 
     if (!selectedColumn || !selectedRow) return;
-
+    
     game.PlayRound(selectedRow, selectedColumn);
     updateScreen();
   }

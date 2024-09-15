@@ -14,7 +14,7 @@ function Gameboard() {
 
   const checkMarkValidity = (row, column, player) => {
     const cell = board[row][column];
-    const available = cell.getValue() === 1; // '1' indicates an available cell
+    const available = cell.getValue() === ""; // '' indicates an available cell
     return available;
   };
 
@@ -36,7 +36,7 @@ function Gameboard() {
 }
 
 function Cell() {
-  let value = 1;
+  let value = "";
 
   const getValue = () => value;
 
@@ -63,30 +63,30 @@ function GameController() {
 
     if (
       // Row checks
-      (b[0][0].getValue() !== 1 &&
+      (b[0][0].getValue() !== "" &&
         b[0][0].getValue() === b[0][1].getValue() &&
         b[0][1].getValue() === b[0][2].getValue()) ||
-      (b[1][0].getValue() !== 1 &&
+      (b[1][0].getValue() !== "" &&
         b[1][0].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[1][2].getValue()) ||
-      (b[2][0].getValue() !== 1 &&
+      (b[2][0].getValue() !== "" &&
         b[2][0].getValue() === b[2][1].getValue() &&
         b[2][1].getValue() === b[2][2].getValue()) ||
       // Column checks
-      (b[0][0].getValue() !== 1 &&
+      (b[0][0].getValue() !== "" &&
         b[0][0].getValue() === b[1][0].getValue() &&
         b[1][0].getValue() === b[2][0].getValue()) ||
-      (b[0][1].getValue() !== 1 &&
+      (b[0][1].getValue() !== "" &&
         b[0][1].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[2][1].getValue()) ||
-      (b[0][2].getValue() !== 1 &&
+      (b[0][2].getValue() !== "" &&
         b[0][2].getValue() === b[1][2].getValue() &&
         b[1][2].getValue() === b[2][2].getValue()) ||
       // Diagonal checks
-      (b[0][0].getValue() !== 1 &&
+      (b[0][0].getValue() !== "" &&
         b[0][0].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[2][2].getValue()) ||
-      (b[0][2].getValue() !== 1 &&
+      (b[0][2].getValue() !== "" &&
         b[0][2].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[2][0].getValue())
     ) {

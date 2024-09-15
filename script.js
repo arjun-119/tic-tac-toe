@@ -22,15 +22,9 @@ function Gameboard() {
     board[row][column].markValue(player);
   };
 
-  const printBoard = () => {
-    const boardValues = board.map((row) => row.map((cell) => cell.getValue()));
-    console.log(boardValues);
-  };
-
   return {
     addMarker,
     getBoard,
-    printBoard,
     checkMarkValidity,
   };
 }
@@ -90,7 +84,6 @@ function GameController() {
         b[0][2].getValue() === b[1][1].getValue() &&
         b[1][1].getValue() === b[2][0].getValue())
     ) {
-      board.printBoard();
       console.log(`${getActivePlayer().name} WINS!!!`);
       gameOver = true;
       return;
@@ -122,7 +115,6 @@ function GameController() {
       if (!gameOver) switchPlayerTurn();
     } else {
       console.log("Invalid mark, please try again!");
-      board.printBoard();
     }
   };
 
@@ -175,4 +167,3 @@ function ScreenController() {
 }
 
 ScreenController();
-// Restart debugging the entire code through from the start and fogure out a place to add and display the required content.

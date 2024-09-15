@@ -51,6 +51,7 @@ function GameController() {
 
   let activePlayer = Players[0];
   let gameOver = false;
+  let headerContent = document.querySelector(".turn");
 
   const checkWin = () => {
     const b = board.getBoard();
@@ -86,6 +87,7 @@ function GameController() {
     ) {
       console.log(`${getActivePlayer().name} WINS!!!`);
       gameOver = true;
+      headerContent.textContent = `${getActivePlayer().name} WINS!!!`;
       return;
     }
   };
@@ -97,6 +99,7 @@ function GameController() {
   const getActivePlayer = () => activePlayer;
 
   const PlayRound = (row, column) => {
+    // headerContent.textContent = `${activePlayer.name}'s turn`;
     if (gameOver) {
       console.log("Game Over");
       return;
@@ -130,14 +133,18 @@ function ScreenController() {
   const game = GameController();
   const playerTurn = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
+  const activePlayer = game.getActivePlayer();
+
+  
+  playerTurn.textContent = `${activePlayer.name}'s turn!`;
 
   const updateScreen = () => {
     boardDiv.textContent = "";
 
     const board = game.getBoard();
-    const activePlayer = game.getActivePlayer();
+    // const activePlayer = game.getActivePlayer();
 
-    playerTurn.textContent = `${activePlayer.name}'s turn!`;
+    // playerTurn.textContent = `${activePlayer.name}'s turn!`;
 
     board.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
